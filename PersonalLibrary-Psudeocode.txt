@@ -1,0 +1,51 @@
+START
+    FUNCTION Main Menu - 0 argument supplied
+        OUTPUT Menu Header
+        OUTPUT Option 1) "Login"
+        OUTPUT Option 2) "Create Account"
+        OUTPUT Option 3) "Exit"
+        SET menuChoice AS User Input
+        START WHILE - CONDITIONS: menuChoice IS Numeric, INTEGER menuChoice IS IN RANGE 1 - 4
+            SET menuChoice AS User Input
+            OUTPUT Error Message
+            END WHILE
+        RETURN menuChoice AS INTEGER to 'Call Point'
+
+    FUNCTION Create Account - 0 arguements supplied
+        SET name AS (CALL FUNCTION Get Name)
+        SET forename AS name AT INDEX 0
+        SET surname AS name AT INDEX 1
+        SET email AS (CALL FUNCTION Get Email)
+        SET username AS email SPLIT AROUND '@'
+        SET username AS username AT INDEX 0
+        SET password AS (CALL FUNCTION Get Password)
+        SET record AS TUPLE(forename, surname, username, email, password)
+        RETURN record AS TUPLE to 'Call Point'
+    
+    FUNCTION Get Name - 0 arguements supplied
+        SET forename AS User Input
+        SET surname AS User Input
+        SET name AS LIST[forename, surname]
+        RETURN name AS LIST to 'Call Point'
+
+    FUNCTION Get Email - 0 arguements supplied
+        SET email AS User Input
+        RETURN email AS STRING to 'Call Point'
+
+    FUNCTION Get Password - 0 arguements supplied
+        SET password AS User Input
+        SET passwordConfirm AS User Input
+        START WHILE - CONDITIONS: password == passwordConfirm
+            SET passwordConfirm AS User Input
+            OUTPUT Error Message
+            START IF - CONDITIONS: passwordConfirm(LOWERCASE) is EQUAL to STRING "exit"
+                SET password AS User Input
+                END IF
+            END WHILE
+        RETURN password AS STRING to 'Call Point'
+    
+
+
+
+
+END
